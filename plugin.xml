@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-pagarme-mpos" version="1.0.0">
+	<name>Mpos</name>
+  <description>Cordova plugin for interacting with Pagar.me's mPOS/pinpad</description>
+  <keywords>pagarme,cordova,phonegap,service,mpos,pinpad,payment,mobile</keywords>
+  <repo>https://github.com/d3x773r/cordova-plugin-socket-io</repo>
+  <issue>https://github.com/d3x773r/cordova-plugin-socket-io/issues</issue>
+  <author>Williaan Souza (dextter)</author>
+	<description>A Cordova plugin for interacting with Pagar.me's mPOS/pinpad payment interface.</description>
+	<license>MIT</license>
+
+	<engines>
+		<engine name="cordova-android" version=">=6.3.0" />
+	</engines>
+
+	<js-module src="www/mpos.js" name="Mpos">
+		<clobbers target="pagarme.Mpos" />
+	</js-module>
+
+	<!-- ios -->
+	<platform name="ios">
+	</platform>
+
+  <!-- android -->
+  <platform name="android">
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.INTERNET" />
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
+      <uses-permission android:name="android.permission.BLUETOOTH"/>
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+      <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    </config-file>
+
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+      <service
+        android:name="com.gurpster.cordova.pagarme.mpos.MposPluginService"
+        android:exported="false"
+        android:enabled="true"/>
+    </config-file>
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="Mpos">
+        <param name="android-package" value="com.gurpster.cordova.pagarme.mpos.MposPlugin" />
+      </feature>
+    </config-file>
+
+    <framework src="src/android/plugin.gradle" custom="true" type="gradleReference"/>
+    <lib-file src="src/android/mpos-android.aar"/>
+    <lib-file src="src/android/mpos-android-native.jar"/>
+
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposPlugin.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposPluginService.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/Constants.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/ConfigParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PaymentParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Message.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/PagarMe.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
+
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Card.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Data.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Receipt.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Metadata.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/PaymentResponse.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Response.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/ReceiptItem.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+
+  </platform>
+</plugin>
