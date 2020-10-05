@@ -1,0 +1,40 @@
+{
+  "name": "com.gurpster.cordova-plugin-pagarme-mpos",
+  "version": "1.0.0",
+  "description": "Cordova plugin for interacting with Pagar.me's mPOS/pinpad",
+  "cordova": {
+    "id": "com.gurpster.cordova-plugin-pagarme-mpos",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d3x773r/cordova-plugin-pagarme-mpos.git"
+  },
+  "keywords": [
+    "pagarme",
+    "cordova",
+    "phonegap",
+    "service",
+    "mpos",
+    "pinpad",
+    "payment",
+    "mobile",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.6.0"
+    }
+  ],
+  "author": "Williaan Souza (Dextter)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d3x773r/cordova-plugin-pagarme-mpos/issues"
+  },
+  "homepage": "https://github.com/d3x773r/cordova-plugin-pagarme-mpos#readme"
+}
