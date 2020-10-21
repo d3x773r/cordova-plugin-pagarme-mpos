@@ -30,7 +30,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import com.alibaba.fastjson.JSON;
-import com.gurpster.cordova.pagarme.mpos.withinterface.Charge;
 import com.gurpster.cordova.pagarme.mpos.withinterface.ChargeActivity;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
