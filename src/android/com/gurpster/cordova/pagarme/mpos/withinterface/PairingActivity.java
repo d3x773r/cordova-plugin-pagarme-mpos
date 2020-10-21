@@ -32,7 +32,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import com.gurpster.cordova.pagarme.mpos.withinterface.App
+import com.gurpster.cordova.pagarme.mpos.withinterface.App;
 
 import java.io.IOException;
 import java.util.ArrayList;
