@@ -1,4 +1,4 @@
-package me.pagar.mposandroidexample;
+package com.gurpster.cordova.pagarme.mpos.withinterface;
 
 import android.content.Intent;
 import android.os.Bundle;
