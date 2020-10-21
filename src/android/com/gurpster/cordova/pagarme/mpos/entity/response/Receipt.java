@@ -61,13 +61,13 @@ public class Receipt implements Parcelable
 
     /**
      * No args constructor for use in serialization
-     *
+     * 
      */
     public Receipt() {
     }
 
     /**
-     *
+     * 
      * @param name
      * @param currency
      * @param type

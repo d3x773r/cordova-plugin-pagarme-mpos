@@ -1,4 +1,4 @@
-package me.pagar.mposandroidexample.listeners;
+package com.gurpster.cordova.pagarme.mpos;
 
 import me.pagar.mposandroid.MposListener;
 import me.pagar.mposandroid.MposPaymentResult;

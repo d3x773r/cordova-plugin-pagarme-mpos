@@ -138,20 +138,20 @@ public class Card{
 
 	@Override
  	public String toString(){
-		return
-			"Card{" +
-			"valid = '" + valid + '\'' +
-			",country = '" + country + '\'' +
-			",date_updated = '" + dateUpdated + '\'' +
-			",date_created = '" + dateCreated + '\'' +
-			",fingerprint = '" + fingerprint + '\'' +
-			",first_digits = '" + firstDigits + '\'' +
-			",id = '" + id + '\'' +
-			",expiration_date = '" + expirationDate + '\'' +
-			",brand = '" + brand + '\'' +
-			",last_digits = '" + lastDigits + '\'' +
-			",object = '" + object + '\'' +
-			",holder_name = '" + holderName + '\'' +
+		return 
+			"Card{" + 
+			"valid = '" + valid + '\'' + 
+			",country = '" + country + '\'' + 
+			",date_updated = '" + dateUpdated + '\'' + 
+			",date_created = '" + dateCreated + '\'' + 
+			",fingerprint = '" + fingerprint + '\'' + 
+			",first_digits = '" + firstDigits + '\'' + 
+			",id = '" + id + '\'' + 
+			",expiration_date = '" + expirationDate + '\'' + 
+			",brand = '" + brand + '\'' + 
+			",last_digits = '" + lastDigits + '\'' + 
+			",object = '" + object + '\'' + 
+			",holder_name = '" + holderName + '\'' + 
 			"}";
 		}
 }
