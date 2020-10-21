@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.pagar.mposandroid.PaymentMethod;
+import com.gurpster.cordova.pagarme.mpos.entity.Charge;
 
 import static android.bluetooth.BluetoothProfile.GATT;
 

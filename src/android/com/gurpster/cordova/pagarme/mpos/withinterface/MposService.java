@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import me.pagar.mposandroid.Mpos;
 import me.pagar.mposandroid.MposPaymentResult;
 import me.pagar.mposandroidexample.listeners.MposCallback;
+import com.gurpster.cordova.pagarme.mpos.entity.Charge;
 
 /**
  * Created by Williaan Souza (dextter) on 16/10/2020
