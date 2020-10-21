@@ -23,8 +23,11 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.pagar.mposandroid.PaymentMethod;
 import com.gurpster.cordova.pagarme.mpos.entity.Charge;
+import com.leve.ai.R;
+
+import com.gurpster.cordova.pagarme.mpos.PaymentParameter;
+import me.pagar.mposandroid.PaymentMethod;
 
 import static android.bluetooth.BluetoothProfile.GATT;
 
@@ -41,13 +44,15 @@ public class ChargeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
+        setContentView(R.layout.activity_charge);
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         myToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent finishIntent = new Intent();
+                setResult(RESULT_CANCELED, finishIntent);
                 finish();
             }
         });
@@ -123,15 +128,20 @@ public class ChargeActivity extends AppCompatActivity {
                 }
 
                 if (checkedId == R.id.credit) {
+                    charge.setPaymentMethod(PaymentMethod.CreditCard);
+                    charge.setCardBrand(charge.getRemoteApi().getParams().get("card_brand"));
                     emvApplications.add(new PaymentParameter.EmvApplication(
                             PaymentMethod.CreditCard,
-                            charge.getCardBrand().toLowerCase()
+                            charge.getRemoteApi().getParams().get("card_brand").toLowerCase()
                     ));
                     charge.setEmvApplications(emvApplications);
                 } else if (checkedId == R.id.debit) {
+                    charge.setPaymentMethod(PaymentMethod.DebitCard);
+                    charge.setCardBrand(charge.getRemoteApi().getParams().get("card_brand"));
                     emvApplications.add(new PaymentParameter.EmvApplication(
                             PaymentMethod.DebitCard,
                             charge.getCardBrand().toLowerCase()
+//                            charge.getCardBrand().toLowerCase()
                     ));
                     charge.setEmvApplications(emvApplications);
                 }
@@ -154,9 +164,13 @@ public class ChargeActivity extends AppCompatActivity {
         AppCompatTextView orderId = findViewById(R.id.order_id);
         AppCompatTextView orderPay = findViewById(R.id.order_pay);
 
-        merchantName.setText(charge.getMerchantName());
-        orderId.setText(String.valueOf(charge.getOrderId()));
+        merchantName.setText(charge.getRemoteApi().getParams().get("merchant_name"));
+        orderId.setText(String.valueOf(charge.getRemoteApi().getParams().get("order_id")));
         orderPay.setText("R$ " + charge.getAmountFormatted());
+
+//        merchantName.setText(charge.getMerchantName());
+//        orderId.setText(String.valueOf(charge.getOrderId()));
+//        orderPay.setText("R$ " + charge.getAmountFormatted());
     }
 
     private void makeCharge() {
@@ -188,5 +202,13 @@ public class ChargeActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == PairingActivity.PAIRING_REQUEST_RESULT_CODE) {
             makeCharge();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent finishIntent = new Intent();
+        setResult(RESULT_CANCELED, finishIntent);
+        finish();
     }
 }

@@ -6,8 +6,8 @@ public class Metadata{
 
 	@Override
  	public String toString(){
-		return
-			"Metadata{" +
+		return 
+			"Metadata{" + 
 			"}";
 		}
 }

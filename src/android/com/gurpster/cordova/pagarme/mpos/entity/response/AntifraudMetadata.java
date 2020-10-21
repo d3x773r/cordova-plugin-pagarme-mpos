@@ -6,8 +6,8 @@ public class AntifraudMetadata{
 
 	@Override
  	public String toString(){
-		return
-			"AntifraudMetadata{" +
+		return 
+			"AntifraudMetadata{" + 
 			"}";
 		}
 }
