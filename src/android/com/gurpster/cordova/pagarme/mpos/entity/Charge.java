@@ -1,8 +1,8 @@
-package com.gurpster.cordova.pagarme.mpos.entity;
+package com.gurpster.cordova.pagarme.mpos.withinterface;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-
+import com.gurpster.cordova.pagarme.mpos.PaymentParameter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,38 +12,21 @@ import java.util.Map;
 
 public class Charge extends PaymentParameter implements Serializable {
 
+    @JSONField(name = "amount")
+    protected String amount = "";
     @JSONField(name = "card_hash")
-    private String cardHash;
+    private String cardHash = "";
     @JSONField(name = "is_online")
     private boolean isOnline;
-    @JSONField(name = "amount")
-    protected String amount;
     @JSONField(name = "payment_method")
     protected int paymentMethod;
     @JSONField(name = "card_brand")
-    protected String cardBrand;
+    protected String cardBrand = "";
     @JSONField(name = "encryption_key")
-    private String encryptionKey;
+    private String encryptionKey = "";
 
-    @JSONField(name = "client_id")
-    private int clientId;
-    @JSONField(name = "merchant_id")
-    private int merchantId;
-    @JSONField(name = "merchant_name")
-    private String merchantName;
-    @JSONField(name = "order_id")
-    protected int orderId;
-    @JSONField(name = "task_id")
-    protected String taskId;
-    @JSONField(name = "token")
-    private String token;
-    @JSONField(name = "apiKey")
-    private String apiKey;
-
-    private Map<String, String> params;
-
-    @JSONField(name = "remote_api")
-    private String remoteApi;
+    @JSONField(name = "remoteApi")
+    private RemoteApi remoteApi;
 
     public Charge() {
     }
@@ -57,13 +40,11 @@ public class Charge extends PaymentParameter implements Serializable {
     public Charge(String cardHash, String amount, int clientId, int merchantId, boolean isOnline) {
         this.cardHash = cardHash;
         this.amount = amount;
-        this.clientId = clientId;
-        this.merchantId = merchantId;
         this.isOnline = isOnline;
     }
 
     public String getCardHash() {
-        return cardHash;
+        return cardHash.trim();
     }
 
     public void setCardHash(String cardHash) {
@@ -71,35 +52,11 @@ public class Charge extends PaymentParameter implements Serializable {
     }
 
     public String getAmount() {
-        return amount;
+        return amount.trim();
     }
 
     public void setAmount(String amount) {
         this.amount = amount;
-    }
-
-    public int getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
-    }
-
-    public int getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(int merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getMerchantName() {
-        return merchantName;
-    }
-
-    public void setMerchantName(String merchantName) {
-        this.merchantName = merchantName;
     }
 
     public boolean isOnline() {
@@ -108,38 +65,6 @@ public class Charge extends PaymentParameter implements Serializable {
 
     public void setOnline(boolean online) {
         isOnline = online;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
     }
 
     @Override
@@ -168,20 +93,12 @@ public class Charge extends PaymentParameter implements Serializable {
         this.encryptionKey = encryptionKey;
     }
 
-    public String getRemoteApi() {
+    public RemoteApi getRemoteApi() {
         return remoteApi;
     }
 
-    public void setRemoteApi(String remoteApi) {
+    public void setRemoteApi(RemoteApi remoteApi) {
         this.remoteApi = remoteApi;
-    }
-
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public void setParams(Map<String, String> params) {
-        this.params = params;
     }
 
     public JSONObject toJson() {
@@ -203,6 +120,52 @@ public class Charge extends PaymentParameter implements Serializable {
                 "%.2f",
                 Float.parseFloat(amount)
         );
+    }
+
+    public static class RemoteApi {
+        @JSONField(name = "type")
+        private String type;
+        @JSONField(name = "url")
+        private String url;
+        @JSONField(name = "headers")
+        private Map<String, String> headers;
+        @JSONField(name = "params")
+        private Map<String, String> params;
+
+        public RemoteApi() {
+        }
+
+        public String getType() {
+            return type.trim();
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getUrl() {
+            return url.trim();
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public Map<String, String> getHeaders() {
+            return headers;
+        }
+
+        public void setHeaders(Map<String, String> headers) {
+            this.headers = headers;
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+
+        public void setParams(Map<String, String> params) {
+            this.params = params;
+        }
     }
 
 }
