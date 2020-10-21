@@ -55,6 +55,10 @@
         android:name="com.gurpster.cordova.pagarme.mpos.MposPluginService"
         android:exported="false"
         android:enabled="true"/>
+      <service
+        android:name="com.gurpster.cordova.pagarme.mpos.MposService"
+        android:exported="false"
+        android:enabled="true"/>
     </config-file>
 
     <config-file target="res/xml/config.xml" parent="/*">
@@ -93,6 +97,7 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Message.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/PagarMe.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Charge.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
 
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Card.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Data.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
@@ -108,6 +113,33 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/FinishActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/ProcessActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mPOS" />
+
+    <source-file src="src/android/font" target-dir="src/main/res" />
+
+    <source-file src="src/android/values/colors.xml" target-dir="src/main/res/values" />
+    <source-file src="src/android/values/styles.xml" target-dir="src/main/res/values" />
+
+    <source-file src="src/android/mipmap-xhdpi/frame_1.png" target-dir="src/main/res/mipmap-xhdpi" />
+    <source-file src="src/android/mipmap-xhdpi/frame_2.png" target-dir="src/main/res/mipmap-xhdpi" />
+
+    <source-file src="src/android/drawable/border_green.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/border_red.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/border_white.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/ic_credit_card__6.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/ic_credit_cards_payment.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/rect_border_red.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/rect_green_border_white.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/round_rect_grey.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/round_rect_red.xml" target-dir="src/main/res/drawable" />
+
+    <source-file src="src/android/layout/activity_charge.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/activity_finish.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/activity_pairing.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/activity_processing.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/dialog_lottie_animated.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/dialog_radio_list.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/dialog_text.xml" target-dir="src/main/res/layout" />
+    <source-file src="src/android/layout/item_radio.xml" target-dir="src/main/res/layout" />
 
   </platform>
 </plugin>

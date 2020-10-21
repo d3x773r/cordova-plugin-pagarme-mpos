@@ -73,6 +73,21 @@ public class MposPluginService extends Service {
     private boolean hasInitialize = false;
     private boolean pinPadConnected = false;
 
+    // calbacks
+    CallbackContext initializeCallback;
+    CallbackContext listDevicesCallback;
+    CallbackContext getConnectedPinPadCallback;
+    CallbackContext connectPinPadCallback;
+    CallbackContext disconnectPinPadCallback;
+    CallbackContext openConnectionCallback;
+    CallbackContext closeConnectionCallback;
+    CallbackContext downloadTablesCallback;
+    CallbackContext displayCallback;
+    CallbackContext payCallback;
+    CallbackContext finishCallback;
+    CallbackContext cancelCallback;
+    // calbacks
+
     @Override
     public IBinder onBind(Intent intent) {
         isRunning = true;
@@ -156,7 +171,8 @@ public class MposPluginService extends Service {
 //            return;
 //        }
 
-        this.callbackContext = callbackContext;
+        listDevicesCallback = callbackContext;
+//        this.callbackContext = callbackContext;
         JSONArray jsonArray = new JSONArray();
         try {
             Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
@@ -180,7 +196,7 @@ public class MposPluginService extends Service {
 
                 PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
-                callbackContext.sendPluginResult(pluginResult);
+                listDevicesCallback.sendPluginResult(pluginResult);
             } else {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("status", 21);
@@ -188,10 +204,10 @@ public class MposPluginService extends Service {
 
                 PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
-                callbackContext.sendPluginResult(pluginResult);
+                listDevicesCallback.sendPluginResult(pluginResult);
             }
         } catch (JSONException e) {
-            callbackContext.error("Unknown error");
+            listDevicesCallback.error("Unknown error");
         }
     }
 
@@ -209,7 +225,8 @@ public class MposPluginService extends Service {
     }
 
     private void getConnectedPinPad(JSONArray args, CallbackContext callbackContext) {
-        this.callbackContext = callbackContext;
+//        this.callbackContext = callbackContext;
+        getConnectedPinPadCallback = callbackContext;
 
         JSONObject jsonObject = new JSONObject();
         JSONObject pinPadObject = new JSONObject();
@@ -220,22 +237,22 @@ public class MposPluginService extends Service {
                 pinPadObject.put("macAddress", pinPad.getAddress());
                 jsonObject.put("pinPadConnected", true);
                 jsonObject.put("pinPad", pinPadObject);
-                callbackContext.success(jsonObject);
+                getConnectedPinPadCallback.success(jsonObject);
             } else if (sharedPreferences.contains(Constants.PREF_DEFAULT_PIN_PAD)) {
                 String pinPadString = sharedPreferences.getString(Constants.PREF_DEFAULT_PIN_PAD, null);
                 JSONObject pinPadJson = new JSONObject(pinPadString);
                 jsonObject.put("code", Constants.BLUETOOTH_CONNECTED);
                 jsonObject.put("pinPad", pinPadJson);
                 jsonObject.put("pinPadConnected", true);
-                callbackContext.success(jsonObject);
+                getConnectedPinPadCallback.success(jsonObject);
             } else {
                 jsonObject.put("code", Constants.BLUETOOTH_NOT_CONNECTED);
                 jsonObject.put("message", "not pin pad connected");
                 jsonObject.put("pinPadConnected", false);
-                callbackContext.error(jsonObject);
+                getConnectedPinPadCallback.error(jsonObject);
             }
         } catch (Exception e) {
-            callbackContext.error("Unknown error");
+            getConnectedPinPadCallback.error("Unknown error");
         }
     }
 
@@ -246,7 +263,8 @@ public class MposPluginService extends Service {
             return;
         }
 
-        this.callbackContext = callbackContext;
+//        this.callbackContext = callbackContext;
+        connectPinPadCallback = callbackContext;
 
         try {
             if (jsonArray.length() > 0 && !jsonArray.getString(0).equals("null")) {
@@ -262,7 +280,7 @@ public class MposPluginService extends Service {
                 }
 
                 if (pinPadMacAddress == null) {
-                    callbackContext.error("Invalid pin pad mac address");
+                    connectPinPadCallback.error("Invalid pin pad mac address");
                     return;
                 }
 
@@ -280,7 +298,7 @@ public class MposPluginService extends Service {
                     }
 
                 } else {
-                    callbackContext.error("Invalid pin pad mac address");
+                    connectPinPadCallback.error("Invalid pin pad mac address");
                     return;
                 }
             } else if (sharedPreferences.contains(Constants.PREF_DEFAULT_PIN_PAD)) {
@@ -301,19 +319,21 @@ public class MposPluginService extends Service {
 
                 PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
-                callbackContext.sendPluginResult(pluginResult);
+                connectPinPadCallback.sendPluginResult(pluginResult);
                 openConnection(jsonArray, callbackContext);
 
                 pinPadConnected = true;
             } else {
-                callbackContext.error("not pin pad available");
+                connectPinPadCallback.error("not pin pad available");
             }
         } catch (Exception e) {
-            callbackContext.error("Invalid Parameter");
+            connectPinPadCallback.error("Invalid Parameter");
         }
     }
 
     private void disconnectPinPad(JSONArray args, CallbackContext callbackContext) {
+
+        disconnectPinPadCallback = callbackContext;
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(Constants.PREF_DEFAULT_PIN_PAD);
@@ -325,7 +345,7 @@ public class MposPluginService extends Service {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("code", Constants.BLUETOOTH_NOT_CONNECTED);
                 jsonObject.put("message", "pin pad disconnected");
-                callbackContext.success(jsonObject);
+                disconnectPinPadCallback.success(jsonObject);
             } catch (JSONException e) {
                 callbackContext.success();
             }
@@ -335,7 +355,8 @@ public class MposPluginService extends Service {
     }
 
     private void openConnection(JSONArray jsonArray, CallbackContext callbackContext) throws JSONException {
-        this.callbackContext = callbackContext;
+//        this.callbackContext = callbackContext;
+        openConnectionCallback = callbackContext;
 
         try {
 
@@ -386,7 +407,7 @@ public class MposPluginService extends Service {
 
                         PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
-                        callbackContext.sendPluginResult(pluginResult);
+                        openConnectionCallback.sendPluginResult(pluginResult);
 
                         if (configParameter.isAlwaysUpdateTables() && mpos != null) {
                             mpos.downloadEMVTablesToDevice(true);
@@ -446,7 +467,7 @@ public class MposPluginService extends Service {
 
                         PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
-                        callbackContext.sendPluginResult(pluginResult);
+                        downloadTablesCallback.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
                     }
                 }
@@ -465,7 +486,7 @@ public class MposPluginService extends Service {
 
                         PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
-                        callbackContext.sendPluginResult(pluginResult);
+                        payCallback.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
                     }
 
@@ -553,23 +574,24 @@ public class MposPluginService extends Service {
             jsonObject.put("message", "prepare pin pad");
             PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
             pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
+            openConnectionCallback.sendPluginResult(pluginResult);
 
         } catch (IOException | JSONException e) {
-            callbackContext.error(e.getMessage());
+            openConnectionCallback.error(e.getMessage());
         }
     }
 
     private void closeConnection(JSONArray args, CallbackContext callbackContext) {
+        closeConnectionCallback = callbackContext;
         if (this.configParameter == null) {
-            callbackContext.error("Error. You need call 'initialize()' first");
+            closeConnectionCallback.error("Error. You need call 'initialize()' first");
             return;
         }
 
         if (mpos != null) {
             mpos.close("closeConnection");
         }
-        callbackContext.success();
+        closeConnectionCallback.success();
     }
 
     private void downloadTables(JSONArray jsonArray, CallbackContext callbackContext) {
@@ -578,39 +600,46 @@ public class MposPluginService extends Service {
             return;
         }
 
-        this.callbackContext = callbackContext;
-        try {
-            boolean forceUpdate = false;
-            String feedbackMessage = null;
+        downloadTablesCallback = callbackContext;
+        new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message message) {
 
-            JSONObject jsonObject = jsonArray.getJSONObject(0);
-            if (jsonObject.has("forceUpdate")) {
-                forceUpdate = jsonObject.getBoolean("forceUpdate");
+                try {
+                    boolean forceUpdate = false;
+                    String feedbackMessage = null;
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    if (jsonObject.has("forceUpdate")) {
+                        forceUpdate = jsonObject.getBoolean("forceUpdate");
+                    }
+//            if (jsonObject.has("feedbackMessage")) {
+//                feedbackMessage = jsonObject.getString("feedbackMessage");
+//                mpos.displayText(feedbackMessage);
+//            }
+
+                    mpos.downloadEMVTablesToDevice(forceUpdate);
+
+                    jsonObject = new JSONObject();
+                    jsonObject.put("code", 21);
+                    jsonObject.put("message", "updating tables...");
+                    PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
+                    pluginResult.setKeepCallback(true);
+                    downloadTablesCallback.sendPluginResult(pluginResult);
+
+                } catch (Exception e) {
+                    downloadTablesCallback.error("Invalid Parameter");
+                }
+
             }
-            if (jsonObject.has("feedbackMessage")) {
-                feedbackMessage = jsonObject.getString("feedbackMessage");
-                mpos.displayText(feedbackMessage);
-            }
-
-            mpos.downloadEMVTablesToDevice(forceUpdate);
-
-            jsonObject = new JSONObject();
-            jsonObject.put("code", 21);
-            jsonObject.put("message", "updating tables...");
-            PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
-            pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
-
-        } catch (Exception e) {
-            callbackContext.error("Invalid Parameter");
-        }
+        };
     }
 
     private void display(JSONArray args, CallbackContext callbackContext) {
-        this.callbackContext = callbackContext;
+        displayCallback = callbackContext;
 
         if (this.configParameter == null) {
-            callbackContext.error("Error. You need call 'initialize()' first");
+            displayCallback.error("Error. You need call 'initialize()' first");
             return;
         }
 
@@ -618,17 +647,17 @@ public class MposPluginService extends Service {
             if (mpos != null && args.getString(0) != null) {
                 mpos.displayText(args.getString(0).toUpperCase());
             }
-            callbackContext.success();
+            displayCallback.success();
         } catch (JSONException e) {
-            callbackContext.error("Invalid Parameter");
+            displayCallback.error("Invalid Parameter");
         }
     }
 
     private void pay(JSONArray jsonArray, CallbackContext callbackContext) throws JSONException {
-        this.callbackContext = callbackContext;
+        payCallback = callbackContext;
 
         if (this.configParameter == null) {
-            callbackContext.error("Error. You need call 'initialize()' first");
+            payCallback.error("Error. You need call 'initialize()' first");
             return;
         }
 
@@ -638,7 +667,7 @@ public class MposPluginService extends Service {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("status", Constants.ERROR_LOW_BATTERY);
                     jsonObject.put("message", "low battery");
-                    callbackContext.error(jsonObject);
+                    payCallback.error(jsonObject);
                     return;
                 }
 
@@ -646,23 +675,19 @@ public class MposPluginService extends Service {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("status", Constants.ERROR_CONNECTION);
                     jsonObject.put("message", "no internet connection");
-                    callbackContext.error(jsonObject);
+                    payCallback.error(jsonObject);
                     return;
                 }
             }
 
             if (mpos != null) {
-//                paymentParameter = JSON.parseObject(
-//                        jsonArray.getJSONObject(0).toString(),
-//                        PaymentParameter.class
-//                );
 
                 charge = JSON.parseObject(
                         jsonArray.getJSONObject(0).toString(),
                         Charge.class
                 );
 
-                int parsedAmount = ((Math.round(Float.parseFloat(charge.getAmount()) * 100) / 100) * 100);
+                int parsedAmount = (int) (Float.parseFloat(charge.getAmount()) * 100);
 
                 mpos.payAmount(
                         parsedAmount,
@@ -678,7 +703,7 @@ public class MposPluginService extends Service {
 
                     PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                     pluginResult.setKeepCallback(false);
-                    callbackContext.error(jsonObject);
+                    payCallback.error(jsonObject);
                 } catch (JSONException ex) {
                 }
             }
@@ -689,7 +714,7 @@ public class MposPluginService extends Service {
 
             PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
             pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
+            payCallback.sendPluginResult(pluginResult);
         } catch (Exception e) {
             try {
                 JSONObject jsonObject = new JSONObject();
@@ -698,7 +723,7 @@ public class MposPluginService extends Service {
 
                 PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
-                callbackContext.error(jsonObject);
+                payCallback.error(jsonObject);
             } catch (JSONException ex) {
             }
         }
@@ -706,6 +731,7 @@ public class MposPluginService extends Service {
     }
 
     private void finish(JSONArray jsonArray, CallbackContext callbackContext) {
+        finishCallback = callbackContext;
         if (this.configParameter == null) {
             callbackContext.error("Error. You need call 'initialize()' first");
             return;
@@ -736,7 +762,7 @@ public class MposPluginService extends Service {
 
             PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
             pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
+            finishCallback.sendPluginResult(pluginResult);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -744,15 +770,15 @@ public class MposPluginService extends Service {
     }
 
     private void cancel(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        this.callbackContext = callbackContext;
+        cancelCallback = callbackContext;
 
         if (this.configParameter == null) {
-            callbackContext.error("Error. You need call 'initialize()' first");
+            cancelCallback.error("Error. You need call 'initialize()' first");
             return;
         }
 
         mpos.close(args.getString(0));
-        callbackContext.success();
+        cancelCallback.success();
     }
 
     private BluetoothDevice findPairedDevice() {
@@ -783,7 +809,7 @@ public class MposPluginService extends Service {
         mpos.close(message.toUpperCase());
     }
 
-    private void callRemoteServer(Charge charge) {
+    private void callRemoteServer(Charge charg) {
 
         AndroidNetworking.post(configParameter.getRemoteApi())
                 .addHeaders("X-Api-Key", charge.getApiKey())
@@ -794,6 +820,7 @@ public class MposPluginService extends Service {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        charge = null;
                         Log.d(TAG, response.toString());
 //                        Response res = JSON.parseObject(
 //                                response.toString(),
@@ -801,7 +828,7 @@ public class MposPluginService extends Service {
 //                        );
                         try {
                             JSONObject jsonObject = response.getJSONObject("data");
-                            if (charge.isOnline()) {
+                            if (charg.isOnline()) {
                                 mpos.finishTransaction(
                                         true,
 //                                    Integer.parseInt(res.getData().getAcquirerResponseCode()),
@@ -834,10 +861,11 @@ public class MposPluginService extends Service {
 
                     @Override
                     public void onError(ANError error) {
+                        charge = null;
                         Log.e(TAG, error.getErrorCode() + " " + error.getErrorBody());
                         showPinPadMessage(configParameter.getMessages().getErrorPayment(), 0);
-                        showPinPadMessage(configParameter.getMessages().getAppName(), 5000);
-//                            close("Finished transaction");
+                        showPinPadMessage("retire o cartao", 3000);
+                        showPinPadMessage(configParameter.getMessages().getAppName(), 5500);
                         try {
                             JSONObject jsonObject = new JSONObject();
                             jsonObject.put("code", Constants.PAYMENT_ERROR);
@@ -850,8 +878,6 @@ public class MposPluginService extends Service {
                         }
                     }
                 });
-
-        this.charge = null;
     }
 
     public PluginResult makePluginResult(PluginResult.Status status, Object... args) {
