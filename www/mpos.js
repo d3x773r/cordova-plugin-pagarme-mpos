@@ -58,6 +58,10 @@ module.exports = {
     cordova.exec(successCallback, errorCallback, mposPluginName, 'pay', [params])
   },
 
+  payWithInterface: function (params, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, mposPluginName, 'payWithInterface', [params])
+  },
+
   cancel: function () {
     cordova.exec(function () {}, function () {}, mposPluginName, 'cancel', [])
   },

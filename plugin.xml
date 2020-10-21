@@ -93,6 +93,8 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/ConfigParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PaymentParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mpos" />
 
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Message.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
@@ -106,13 +108,15 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/PaymentResponse.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Response.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/ReceiptItem.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/AntifraudMetadata.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
 
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/App.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/ModalUtils.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/MposService.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/PairingActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/ChargeActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/FinishActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/ProcessActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
-    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mPOS" />
 
     <source-file src="src/android/font" target-dir="src/main/res" />
 
