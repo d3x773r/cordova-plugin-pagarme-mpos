@@ -29,15 +29,20 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import com.alibaba.fastjson.JSON;
+import com.gurpster.cordova.pagarme.mpos.withinterface.Charge;
+import com.gurpster.cordova.pagarme.mpos.withinterface.ChargeActivity;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PermissionHelper;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.BIND_AUTO_CREATE;
 import static org.apache.cordova.media.AudioHandler.permissions;
@@ -72,11 +77,26 @@ public class MposPlugin extends CordovaPlugin {
         super.pluginInitialize();
     }
 
-    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) {
+    public boolean execute(final String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
 
         this.callbackContext = callbackContext;
         this.requestArgs = args;
         this.firedAction = action;
+
+        if (action.equals("payWithInterface")) {
+            Intent chargeIntent = new Intent(
+                    cordova.getActivity(),
+                    ChargeActivity.class
+            );
+//            Charge charge = JSON.parseObject(
+//                    getIntent().getStringExtra("data"),
+//                    Charge.class
+//            );
+
+            chargeIntent.putExtra("data", args.getJSONObject(0).toString());
+            cordova.startActivityForResult(this, chargeIntent, 847);
+            return true;
+        }
 
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -181,7 +201,11 @@ public class MposPlugin extends CordovaPlugin {
                     invokeMethod(firedAction, requestArgs, callbackContext);
                 }
             }, 500);
-        }else {
+        } else if (resultCode == RESULT_OK && requestCode == 847) {
+            this.callbackContext.success();
+        } else if (resultCode == RESULT_CANCELED && requestCode == 847) {
+            this.callbackContext.error(Constants.PAYMENT_ERROR);
+        } else {
             this.callbackContext.error("Bluetooth not enabled");
         }
     }
