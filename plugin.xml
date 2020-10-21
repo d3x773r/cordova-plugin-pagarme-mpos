@@ -97,7 +97,7 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Message.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/PagarMe.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
-    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Charge.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Charge.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
 
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Card.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/response/Data.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity/response" />
