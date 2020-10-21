@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSON;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import com.gurpster.cordova.pagarme.mpos.entity.Charge;
 
 /**
  * Created by Williaan Souza (dextter) on 16/10/2020

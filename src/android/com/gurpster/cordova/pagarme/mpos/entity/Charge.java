@@ -2,34 +2,48 @@ package com.gurpster.cordova.pagarme.mpos.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
-import com.gurpster.cordova.pagarme.mpos.PaymentParameter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Locale;
+import java.util.Map;
 
 public class Charge extends PaymentParameter implements Serializable {
 
     @JSONField(name = "card_hash")
     private String cardHash;
-    @JSONField(name = "client_id")
-    private int clientId;
-    @JSONField(name = "merchant_id")
-    private int merchantId;
     @JSONField(name = "is_online")
     private boolean isOnline;
     @JSONField(name = "amount")
     protected String amount;
+    @JSONField(name = "payment_method")
+    protected int paymentMethod;
+    @JSONField(name = "card_brand")
+    protected String cardBrand;
+    @JSONField(name = "encryption_key")
+    private String encryptionKey;
+
+    @JSONField(name = "client_id")
+    private int clientId;
+    @JSONField(name = "merchant_id")
+    private int merchantId;
+    @JSONField(name = "merchant_name")
+    private String merchantName;
     @JSONField(name = "order_id")
     protected int orderId;
     @JSONField(name = "task_id")
     protected String taskId;
-
+    @JSONField(name = "token")
     private String token;
     @JSONField(name = "apiKey")
     private String apiKey;
+
+    private Map<String, String> params;
+
+    @JSONField(name = "remote_api")
+    private String remoteApi;
 
     public Charge() {
     }
@@ -80,6 +94,14 @@ public class Charge extends PaymentParameter implements Serializable {
         this.merchantId = merchantId;
     }
 
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
     public boolean isOnline() {
         return isOnline;
     }
@@ -120,6 +142,48 @@ public class Charge extends PaymentParameter implements Serializable {
         this.apiKey = apiKey;
     }
 
+    @Override
+    public int getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    @Override
+    public void setPaymentMethod(int paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCardBrand() {
+        return cardBrand;
+    }
+
+    public void setCardBrand(String cardBrand) {
+        this.cardBrand = cardBrand;
+    }
+
+    public String getEncryptionKey() {
+        return encryptionKey;
+    }
+
+    public void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
+    }
+
+    public String getRemoteApi() {
+        return remoteApi;
+    }
+
+    public void setRemoteApi(String remoteApi) {
+        this.remoteApi = remoteApi;
+    }
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
+    }
+
     public JSONObject toJson() {
         try {
             String string = JSON.toJSONString(this);
@@ -127,6 +191,18 @@ public class Charge extends PaymentParameter implements Serializable {
         } catch (JSONException e) {
             return null;
         }
+    }
+
+    public int getAmountInt() {
+        return (int) (Float.parseFloat(amount) * 100);
+    }
+
+    public String getAmountFormatted() {
+        return String.format(
+                Locale.getDefault(),
+                "%.2f",
+                Float.parseFloat(amount)
+        );
     }
 
 }
