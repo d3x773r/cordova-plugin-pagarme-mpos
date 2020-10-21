@@ -1,4 +1,4 @@
-package me.pagar.mposandroidexample;
+package com.gurpster.cordova.pagarme.mpos.withinterface;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
