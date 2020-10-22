@@ -317,7 +317,7 @@ public class MposPluginService extends Service {
                 pinPadObject.put("macAddress", pinPad.getAddress());
                 jsonObject.put("pinPad", pinPadObject);
 
-                PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
                 connectPinPadCallback.sendPluginResult(pluginResult);
                 openConnection(jsonArray, callbackContext);
@@ -405,7 +405,7 @@ public class MposPluginService extends Service {
                         jsonObject.put("code", Constants.INITIALIZED_SUCCESSFULLY);
                         jsonObject.put("message", "initialized");
 
-                        PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                        PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
                         openConnectionCallback.sendPluginResult(pluginResult);
 
@@ -432,7 +432,7 @@ public class MposPluginService extends Service {
                             jsonObject.put("code", Constants.PIN_PAD_CANCELED);
                             jsonObject.put("message", "pin pad by canceled");
 
-                            PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                            PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                             pluginResult.setKeepCallback(false);
                             callbackContext.error(jsonObject);
                         } catch (JSONException e) {
@@ -447,7 +447,7 @@ public class MposPluginService extends Service {
                         jsonObject.put("code", 20);
                         jsonObject.put("message", "done");
 
-                        PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                        PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
                         callbackContext.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
@@ -465,7 +465,7 @@ public class MposPluginService extends Service {
                         jsonObject.put("message", "received table updated");
                         jsonObject.put("loaded", loaded);
 
-                        PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                        PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
                         downloadTablesCallback.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
@@ -484,7 +484,7 @@ public class MposPluginService extends Service {
                         jsonObject.put("code", 20);
                         jsonObject.put("message", "transaction approved");
 
-                        PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                        PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
                         payCallback.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
@@ -501,7 +501,7 @@ public class MposPluginService extends Service {
                         jsonObject.put("code", 20);
                         jsonObject.put("message", "close connection");
 
-                        PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                        PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                         pluginResult.setKeepCallback(false);
                         callbackContext.sendPluginResult(pluginResult);
                     } catch (JSONException e) {
@@ -525,7 +525,7 @@ public class MposPluginService extends Service {
                             jsonObject.put("message", "delegate remote api");
                             jsonObject.put("data", charge.toJson());
 
-                            PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                            PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                             pluginResult.setKeepCallback(false);
                             callbackContext.sendPluginResult(pluginResult);
                         } catch (JSONException e) {
@@ -701,7 +701,7 @@ public class MposPluginService extends Service {
                     jsonObject.put("code", Constants.PAYMENT_ERROR_PARAMETERS);
                     jsonObject.put("message", "wrong parameters");
 
-                    PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                    PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                     pluginResult.setKeepCallback(false);
                     payCallback.error(jsonObject);
                 } catch (JSONException ex) {
@@ -721,7 +721,7 @@ public class MposPluginService extends Service {
                 jsonObject.put("code", Constants.PAYMENT_ERROR_PARAMETERS);
                 jsonObject.put("message", "wrong parameters");
 
-                PluginResult pluginResult = PluginResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
+                PluginResult pluginResult = ResultHelper.makePluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(false);
                 payCallback.error(jsonObject);
             } catch (JSONException ex) {
@@ -811,7 +811,7 @@ public class MposPluginService extends Service {
 
     private void callRemoteServer(Charge charg) {
 
-        AndroidNetworking.post(configParameter.getRemoteApi())
+        /*AndroidNetworking.post(configParameter.getRemoteApi())
                 .addHeaders("X-Api-Key", charge.getApiKey())
                 .addHeaders("Authorization", charge.getToken())
                 .addJSONObjectBody(charge.toJson())
@@ -877,7 +877,7 @@ public class MposPluginService extends Service {
                         } catch (JSONException e) {
                         }
                     }
-                });
+                });*?
     }
 
     public PluginResult makePluginResult(PluginResult.Status status, Object... args) {

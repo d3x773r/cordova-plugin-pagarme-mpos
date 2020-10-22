@@ -8,20 +8,22 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-
+import com.alibaba.fastjson.JSON;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.gurpster.cordova.pagarme.mpos.MposCallback;
+import com.gurpster.cordova.pagarme.mpos.entity.Charge;
 
-import org.greenrobot.eventbus.EventBus;
-import org.json.JSONObject;
-
+import com.gurpster.cordova.pagarme.mpos.entity.Message;
+import com.gurpster.cordova.pagarme.mpos.entity.response.Response;
+import com.leve.ai.R;
 import me.pagar.mposandroid.Mpos;
 import me.pagar.mposandroid.MposPaymentResult;
-import me.pagar.mposandroidexample.listeners.MposCallback;
-import com.gurpster.cordova.pagarme.mpos.entity.Charge;
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 /**
  * Created by Williaan Souza (dextter) on 16/10/2020
@@ -36,6 +38,7 @@ public class MposService extends Service {
     private Mpos mpos;
     public static boolean isRunning;
     public static boolean isMposConnected;
+    public static boolean isPaymentInProgress;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -108,7 +111,7 @@ public class MposService extends Service {
             @Override
             public void receiveInitialization() {
                 super.receiveInitialization();
-                display(getString(R.string.pin_pad_name));
+                display(getString(R.string.app_name));
                 mpos.downloadEMVTablesToDevice(false);
                 display("configurando...", 1000);
             }
@@ -117,7 +120,7 @@ public class MposService extends Service {
             public void receiveTableUpdated(boolean b) {
                 super.receiveTableUpdated(b);
                 EventBus.getDefault().post(new ConnectedEvent());
-                display(getString(R.string.pin_pad_name));
+                display(getString(R.string.app_name));
             }
 
             @Override
@@ -136,7 +139,7 @@ public class MposService extends Service {
                 super.receiveError(i);
                 String message = Message.getErrorFromCode(i);
                 display(message);
-                display(getString(R.string.pin_pad_name), 7000);
+                display(getString(R.string.app_name), 7000);
                 EventBus.getDefault().post(new FinishEvent(true, message));
             }
 
@@ -146,6 +149,7 @@ public class MposService extends Service {
                 charge.setCardHash(cardHash);
                 charge.setOnline(mposPaymentResult.isOnline);
                 callRemoteServer(charge);
+                display("processando...");
             }
         });
         mpos.payAmount(
@@ -153,28 +157,40 @@ public class MposService extends Service {
                 charge.getEmvApplications(),
                 charge.getPaymentMethod()
         );
+        isPaymentInProgress = true;
         display("processando...");
     }
 
     private void callRemoteServer(final Charge charge) {
-        ANRequest.PostRequestBuilder<?> requestBuilder = AndroidNetworking.post(charge.getRemoteApi());
 
-//        requestBuilder.addHeaders(charge.getParams());
-        requestBuilder.addHeaders("X-Api-Key", charge.getApiKey());
-        requestBuilder.addHeaders("Authorization", charge.getToken());
+        ANRequest.PostRequestBuilder<?> requestBuilder;
+        switch (charge.getRemoteApi().getType().toLowerCase()) {
+            case "put":
+                requestBuilder = AndroidNetworking.put(charge.getRemoteApi().getUrl());
+                break;
+            case "patch":
+                requestBuilder = AndroidNetworking.patch(charge.getRemoteApi().getUrl());
+                break;
+            default:
+                requestBuilder = AndroidNetworking.post(charge.getRemoteApi().getUrl());
+                break;
+        }
 
-//        requestBuilder.addBodyParameter(charge.getParams());
-        requestBuilder.addJSONObjectBody(charge.toJson());
+        // add headers
+        requestBuilder.addHeaders(charge.getRemoteApi().getHeaders());
+        // add body params
+        requestBuilder.addBodyParameter(charge.getRemoteApi().getParams());
 
         requestBuilder.setPriority(Priority.HIGH);
         ANRequest<?> request = requestBuilder.build();
         request.getAsJSONObject(new JSONObjectRequestListener() {
             @Override
             public void onResponse(JSONObject response) {
-//                        Response res = JSON.parseObject(
-//                                response.toString(),
-//                                Response.class
-//                        );
+                isPaymentInProgress = false;
+                Response res = JSON.parseObject(
+                        response.toString(),
+                        Response.class
+                );
                 try {
                     JSONObject jsonObject = response.getJSONObject("data");
                     if (charge.isOnline()) {
@@ -195,15 +211,18 @@ public class MposService extends Service {
 
                 display("finalizado");
                 display("remova o cartao", 2500);
-                display(getString(R.string.pin_pad_name), 5500);
+                display(getString(R.string.app_name), 5500);
+
             }
 
             @Override
             public void onError(ANError error) {
-                Log.d("", error.getErrorBody());
-                EventBus.getDefault().post(new FinishEvent(true, "erro de conexao"));
+                isPaymentInProgress = false;
+                Log.d("", error.getMessage());
                 display("erro de conexao");
-                display(getString(R.string.pin_pad_name), 5000);
+                display("remova o cartao", 2500);
+                display(getString(R.string.app_name), 5000);
+                EventBus.getDefault().post(new FinishEvent(true, "erro de conexao"));
             }
         });
     }

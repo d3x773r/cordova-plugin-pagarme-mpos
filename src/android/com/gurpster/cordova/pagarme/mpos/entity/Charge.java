@@ -3,7 +3,6 @@ package com.gurpster.cordova.pagarme.mpos.entity;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.gurpster.cordova.pagarme.mpos.PaymentParameter;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
