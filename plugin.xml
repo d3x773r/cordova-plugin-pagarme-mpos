@@ -55,10 +55,7 @@
         android:name="com.gurpster.cordova.pagarme.mpos.MposPluginService"
         android:exported="false"
         android:enabled="true"/>
-      <service
-        android:name="com.gurpster.cordova.pagarme.mpos.MposService"
-        android:exported="false"
-        android:enabled="true"/>
+      <service android:enabled="true" android:exported="false" android:name="com.gurpster.cordova.pagarme.mpos.withinterface.MposService" />
     </config-file>
 
     <config-file target="res/xml/config.xml" parent="/*">
@@ -93,7 +90,7 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/ConfigParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PaymentParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/ResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
-    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mpos" />
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
 
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Message.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
