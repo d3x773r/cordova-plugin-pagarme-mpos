@@ -50,6 +50,10 @@
       <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     </config-file>
 
+    <edit-config file="AndroidManifest.xml" target="/manifest/application" mode="merge">
+      <application android:name="com.gurpster.cordova.pagarme.mpos.withinterface.App" />
+    </edit-config>
+
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <service
         android:name="com.gurpster.cordova.pagarme.mpos.MposPluginService"
