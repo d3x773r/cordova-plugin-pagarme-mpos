@@ -7,7 +7,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PermissionHelper;
 import org.apache.cordova.PluginResult;
 
-public class PluginResultHelper {
+public class ResultHelper {
     public static PluginResult makePluginResult(PluginResult.Status status, Object... args) {
         if (args.length == 0) {
             return new PluginResult(status);
