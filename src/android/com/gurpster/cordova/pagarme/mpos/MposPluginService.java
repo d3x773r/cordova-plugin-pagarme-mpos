@@ -877,7 +877,7 @@ public class MposPluginService extends Service {
                         } catch (JSONException e) {
                         }
                     }
-                });*?
+                });*/
     }
 
     public PluginResult makePluginResult(PluginResult.Status status, Object... args) {
