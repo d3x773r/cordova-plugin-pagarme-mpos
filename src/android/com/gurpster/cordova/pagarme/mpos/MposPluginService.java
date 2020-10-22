@@ -27,15 +27,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.gurpster.cordova.pagarme.mpos.entity.Charge;
+import com.gurpster.cordova.pagarme.mpos.withinterface.MposService;
+import com.leve.ai.R;
 import me.pagar.mposandroid.Mpos;
 import me.pagar.mposandroid.MposListener;
 import me.pagar.mposandroid.MposPaymentResult;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -809,75 +813,74 @@ public class MposPluginService extends Service {
         mpos.close(message.toUpperCase());
     }
 
-    private void callRemoteServer(Charge charg) {
+    private void callRemoteServer(final Charge charge) {
 
-        /*AndroidNetworking.post(configParameter.getRemoteApi())
-                .addHeaders("X-Api-Key", charge.getApiKey())
-                .addHeaders("Authorization", charge.getToken())
-                .addJSONObjectBody(charge.toJson())
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        charge = null;
-                        Log.d(TAG, response.toString());
-//                        Response res = JSON.parseObject(
-//                                response.toString(),
-//                                Response.class
-//                        );
-                        try {
-                            JSONObject jsonObject = response.getJSONObject("data");
-                            if (charg.isOnline()) {
-                                mpos.finishTransaction(
-                                        true,
-//                                    Integer.parseInt(res.getData().getAcquirerResponseCode()),
-                                        Integer.parseInt(jsonObject.getString("acquirer_response_code")),
-//                                    res.getData().getCardEmvResponse()
-                                        jsonObject.getString("card_emv_response")
-                                );
-                            }
+        ANRequest.PostRequestBuilder<?> requestBuilder;
+        switch (charge.getRemoteApi().getType().toLowerCase()) {
+            case "put":
+                requestBuilder = AndroidNetworking.put(charge.getRemoteApi().getUrl());
+                break;
+            case "patch":
+                requestBuilder = AndroidNetworking.patch(charge.getRemoteApi().getUrl());
+                break;
+            default:
+                requestBuilder = AndroidNetworking.post(charge.getRemoteApi().getUrl());
+                break;
+        }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        // add headers
+        requestBuilder.addHeaders(charge.getRemoteApi().getHeaders());
 
-                        showPinPadMessage(configParameter.getMessages().getSuccessPayment(), 0);
-                        showPinPadMessage("remova o cartao", 2500);
-                        showPinPadMessage(configParameter.getMessages().getAppName(), 5500);
+        requestBuilder.addBodyParameter("amount", charge.getAmount());
+        requestBuilder.addBodyParameter("card_hash", charge.getCardHash());
 
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("code", Constants.PAYMENT_SUCCESSFUL);
-                            jsonObject.put("message", "payment successfully");
+        // add body params
+        requestBuilder.addBodyParameter(charge.getRemoteApi().getParams());
 
-                            PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
-                            pluginResult.setKeepCallback(false);
-                            callbackContext.sendPluginResult(pluginResult);
-                        } catch (JSONException e) {
-                        }
+        requestBuilder.setPriority(Priority.HIGH);
+        ANRequest<?> request = requestBuilder.build();
+        request.getAsJSONObject(new JSONObjectRequestListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                paymentSuccessful(response, charge);
+            }
 
-                    }
+            @Override
+            public void onError(ANError error) {
+                paymentError();
+            }
+        });
+    }
 
-                    @Override
-                    public void onError(ANError error) {
-                        charge = null;
-                        Log.e(TAG, error.getErrorCode() + " " + error.getErrorBody());
-                        showPinPadMessage(configParameter.getMessages().getErrorPayment(), 0);
-                        showPinPadMessage("retire o cartao", 3000);
-                        showPinPadMessage(configParameter.getMessages().getAppName(), 5500);
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("code", Constants.PAYMENT_ERROR);
-                            jsonObject.put("message", error.getErrorBody());
+    public void paymentSuccessful(JSONObject response, Charge charge) {
+        try {
+            JSONObject jsonObject = response.getJSONObject("data");
+            mpos.finishTransaction(
+                    true,
+                    Integer.parseInt(jsonObject.getString("acquirer_response_code")),
+                    jsonObject.getString("card_emv_response")
+            );
+            if (charge.isOnline()) {
+            }
 
-                            PluginResult pluginResult = makePluginResult(PluginResult.Status.OK, jsonObject);
-                            pluginResult.setKeepCallback(false);
-                            callbackContext.error(jsonObject);
-                        } catch (JSONException e) {
-                        }
-                    }
-                });*/
+            EventBus.getDefault().post(new MposService.FinishEvent(false));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        EventBus.getDefault().post(new MposService.FinishEvent(false));
+
+        display("finalizado");
+        display("remova o cartao", 2000);
+        display(getString(R.string.app_name), 7500);
+    }
+
+    private void paymentError() {
+        display("erro de conexao");
+//                display("remova o cartao", 2500);
+        display(getString(R.string.app_name), 7000);
+        EventBus.getDefault().post(new MposService.FinishEvent(true, "erro de conexao"));
     }
 
     public PluginResult makePluginResult(PluginResult.Status status, Object... args) {
@@ -942,6 +945,27 @@ public class MposPluginService extends Service {
 //        i.setType("*/*");
 //        getApplicationContext().startActivityForResult(Intent.createChooser(i, "select file"), 12);
         callbackContext.success();
+    }
+
+    public void display(String message) {
+        try {
+            if (mpos != null && !TextUtils.isEmpty(message)) {
+                mpos.displayText(message.toUpperCase());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
+    }
+
+    private void display(final String message, int delay) {
+        if (mpos != null && !TextUtils.isEmpty(message)) {
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mpos.displayText(message.toUpperCase());
+                }
+            }, delay);
+        }
     }
 
 }

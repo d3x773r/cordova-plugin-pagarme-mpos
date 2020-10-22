@@ -59,13 +59,19 @@ public class FinishActivity extends AppCompatActivity {
                 R.color.greener
         ));
         title.setText("PAGAMENTO REALIZADO");
-        title.setTextColor(color);
+        title.setTextColor(ContextCompat.getColor(
+                getApplicationContext(),
+                R.color.white
+        ));
         description.setText(getString(R.string.payment_successfully));
         description.setTextColor(color);
         animationView.setAnimationFromUrl("https://assets1.lottiefiles.com/datafiles/OhIfcxnkLsj1Jxj/data.json");
 
-        action.setTextColor(color);
-        action.setBackgroundResource(R.drawable.rect_green_border_white);
+        action.setTextColor(ContextCompat.getColor(
+                getApplicationContext(),
+                R.color.greener
+        ));
+        action.setBackgroundResource(R.drawable.round_rect_white);
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,11 +83,11 @@ public class FinishActivity extends AppCompatActivity {
     void error() {
         int color = ContextCompat.getColor(
                 getApplicationContext(),
-                R.color.black_title
+                R.color.black_description
         );
         rootView.setBackgroundColor(ContextCompat.getColor(
                 getApplicationContext(),
-                R.color.colorApp
+                R.color.white
         ));
         title.setText("ERRO");
         title.setTextColor(color);
@@ -94,11 +100,14 @@ public class FinishActivity extends AppCompatActivity {
                 getApplicationContext(),
                 R.color.colorApp
         ));
-        action.setBackgroundResource(R.drawable.border_red);
+        action.setBackgroundResource(R.drawable.rect_border_red);
         action.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chargeIntent = new Intent();
+                Intent chargeIntent = new Intent(
+                        FinishActivity.this,
+                        ChargeActivity.class
+                );
                 chargeIntent.putExtra("data", getIntent().getStringExtra("data"));
                 startActivity(chargeIntent);
                 finish();
