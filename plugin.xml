@@ -92,8 +92,7 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/Constants.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/ConfigParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PaymentParameter.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
-    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
-    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" />
+    <!-- <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/PluginResultHelper.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/" /> -->
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/MposCallback.java" target-dir="src/com/gurpster/cordova/pagarme/mpos" />
 
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/entity/Config.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/entity" />
