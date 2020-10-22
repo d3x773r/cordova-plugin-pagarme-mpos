@@ -103,10 +103,6 @@ public class MposPlugin extends CordovaPlugin {
             return false;
         }
 
-//        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-//        i.setType("*/*");
-//        cordova.getActivity().startActivityForResult(Intent.createChooser(i, "select file"), 12);
-
         if (args != null) {
 
             if (!bluetoothAdapter.isEnabled()) {
