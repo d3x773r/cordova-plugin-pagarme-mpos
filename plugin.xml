@@ -56,6 +56,18 @@
         android:exported="false"
         android:enabled="true"/>
       <service android:enabled="true" android:exported="false" android:name="com.gurpster.cordova.pagarme.mpos.withinterface.MposService" />
+      <activity android:name="com.gurpster.cordova.pagarme.mpos.withinterface.FinishActivity"
+        android:label=""
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name="com.gurpster.cordova.pagarme.mpos.withinterface.ChargeActivity"
+          android:label=""
+          android:theme="@style/AppTheme.Charge"/>
+        <activity android:name="com.gurpster.cordova.pagarme.mpos.withinterface.ProcessActivity"
+          android:label=""
+          android:theme="@style/AppTheme.Process"/>
+        <activity android:name="com.gurpster.cordova.pagarme.mpos.withinterface.PairingActivity"
+          android:label=""
+          android:theme="@style/AppTheme.Pairing"/>
     </config-file>
 
     <config-file target="res/xml/config.xml" parent="/*">
