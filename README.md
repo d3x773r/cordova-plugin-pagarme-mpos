@@ -1,5 +1,7 @@
 # cordova-plugin-pagarme-mpos
 
+[Documentação oficial SDK pagar.me](https://docs.pagar.me/docs/overview-mpos)
+
 ## Uso
 
 ###### Pagamento com fluxo em interface nativa (ANDROID)
