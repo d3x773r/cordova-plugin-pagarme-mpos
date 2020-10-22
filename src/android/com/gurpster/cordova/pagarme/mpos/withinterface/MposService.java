@@ -8,7 +8,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import com.alibaba.fastjson.JSON;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.ANRequest;
 import com.androidnetworking.common.Priority;
@@ -16,9 +15,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.gurpster.cordova.pagarme.mpos.MposCallback;
 import com.gurpster.cordova.pagarme.mpos.entity.Charge;
-
 import com.gurpster.cordova.pagarme.mpos.entity.Message;
-import com.gurpster.cordova.pagarme.mpos.entity.response.Response;
 import com.leve.ai.R;
 import me.pagar.mposandroid.Mpos;
 import me.pagar.mposandroid.MposPaymentResult;
@@ -178,6 +175,10 @@ public class MposService extends Service {
 
         // add headers
         requestBuilder.addHeaders(charge.getRemoteApi().getHeaders());
+
+        requestBuilder.addBodyParameter("amount", charge.getAmount());
+        requestBuilder.addBodyParameter("card_hash", charge.getCardHash());
+
         // add body params
         requestBuilder.addBodyParameter(charge.getRemoteApi().getParams());
 
@@ -187,44 +188,46 @@ public class MposService extends Service {
             @Override
             public void onResponse(JSONObject response) {
                 isPaymentInProgress = false;
-                Response res = JSON.parseObject(
-                        response.toString(),
-                        Response.class
-                );
-                try {
-                    JSONObject jsonObject = response.getJSONObject("data");
-                    if (charge.isOnline()) {
-                        mpos.finishTransaction(
-                                true,
-//                                    Integer.parseInt(res.getData().getAcquirerResponseCode()),
-                                Integer.parseInt(jsonObject.getString("acquirer_response_code")),
-//                                    res.getData().getCardEmvResponse()
-                                jsonObject.getString("card_emv_response")
-                        );
-                    }
-
-                    EventBus.getDefault().post(new FinishEvent(false));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                display("finalizado");
-                display("remova o cartao", 2500);
-                display(getString(R.string.app_name), 5500);
-
+                paymentSuccessful(response, charge);
             }
 
             @Override
             public void onError(ANError error) {
                 isPaymentInProgress = false;
-                Log.d("", error.getMessage());
-                display("erro de conexao");
-                display("remova o cartao", 2500);
-                display(getString(R.string.app_name), 5000);
-                EventBus.getDefault().post(new FinishEvent(true, "erro de conexao"));
+                paymentError();
             }
         });
+    }
+
+    public void paymentSuccessful(JSONObject response, Charge charge) {
+        try {
+            JSONObject jsonObject = response.getJSONObject("data");
+            if (charge.isOnline()) {
+                mpos.finishTransaction(
+                        true,
+                        Integer.parseInt(jsonObject.getString("acquirer_response_code")),
+                        jsonObject.getString("card_emv_response")
+                );
+            }
+
+            EventBus.getDefault().post(new FinishEvent(false));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        EventBus.getDefault().post(new FinishEvent(false));
+
+        display("finalizado");
+        display("remova o cartao", 2000);
+        display(getString(R.string.app_name), 7500);
+    }
+
+    private void paymentError() {
+        display("erro de conexao");
+//                display("remova o cartao", 2500);
+        display(getString(R.string.app_name), 7000);
+        EventBus.getDefault().post(new FinishEvent(true, "erro de conexao"));
     }
 
     @Override

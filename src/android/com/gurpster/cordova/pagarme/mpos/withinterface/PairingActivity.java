@@ -166,12 +166,10 @@ public class PairingActivity extends AppCompatActivity {
             showDevicesDialog();
         } else {
             ModalUtils.showTextDialog(
-                    PairingActivity.this,
+                    App.getInstance(),
                     R.layout.dialog_text,
                     getString(R.string.error),
-                    getString(R.string.not_device_paired_error_default),
-                    false,
-                    true
+                    getString(R.string.not_device_paired_error_default)
             ).show();
         }
     }
@@ -255,6 +253,15 @@ public class PairingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                if (device == null) {
+                    ModalUtils.showTextDialog(
+                            App.getInstance(),
+                            R.layout.dialog_text,
+                            getString(R.string.error),
+                            "Escolha um dispositivo"
+                    ).show();
+                    return;
+                }
                 waitingDialog = ModalUtils.showAnimatedDialog(
                         PairingActivity.this,
                         R.layout.dialog_lottie_animated,
@@ -271,32 +278,30 @@ public class PairingActivity extends AppCompatActivity {
                     waitingHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            try {
-                                waitingDialog.dismiss();
+//                            try {
                                 waitingHandler.removeCallbacks(this);
-                                ModalUtils.showTextDialog(
-                                        PairingActivity.this,
-                                        R.layout.dialog_text,
-                                        getString(R.string.error),
-                                        getString(R.string.not_device_paired_error_default),
-                                        false,
-                                        true
-                                ).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                                waitingDialog.dismiss();
+                                if (!App.getInstance().getMposService().isMposConnected()) {
+                                    ModalUtils.showTextDialog(
+                                            App.getInstance(),
+                                            R.layout.dialog_text,
+                                            getString(R.string.error),
+                                            getString(R.string.not_device_paired_error_default)
+                                    ).show();
+                                }
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                         }
                     }, 40000);
                     service.connect();
                 } catch (IOException e) {
                     waitingDialog.dismiss();
                     ModalUtils.showTextDialog(
-                            PairingActivity.this,
+                            App.getInstance(),
                             R.layout.dialog_text,
                             getString(R.string.error),
-                            getString(R.string.not_device_paired_error_default),
-                            false,
-                            true
+                            getString(R.string.not_device_paired_error_default)
                     ).show();
                 }
                 waitingDialog.show();
@@ -327,12 +332,10 @@ public class PairingActivity extends AppCompatActivity {
     public void onMessageEvent(MposService.NotConnectedEvent event) {
         waitingDialog.dismiss();
         ModalUtils.showTextDialog(
-                PairingActivity.this,
+                App.getInstance(),
                 R.layout.dialog_text,
                 getString(R.string.error),
-                getString(R.string.not_device_paired_error_default),
-                false,
-                true
+                getString(R.string.not_device_paired_error_default)
         ).show();
     }
 }

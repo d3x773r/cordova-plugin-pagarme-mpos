@@ -42,7 +42,7 @@ public class App extends Application {
         super.onCreate();
 
         if (sInstance == null) {
-            sInstance = this;
+            sInstance = App.this;
         }
 
         if (!isMyServiceRunning(MposService.class) || mposService == null) {

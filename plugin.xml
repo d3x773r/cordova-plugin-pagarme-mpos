@@ -141,12 +141,16 @@
     <source-file src="src/android/drawable/border_green.xml" target-dir="src/main/res/drawable" />
     <source-file src="src/android/drawable/border_red.xml" target-dir="src/main/res/drawable" />
     <source-file src="src/android/drawable/border_white.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/rect_border_red.xml" target-dir="src/main/res/drawable" />
+
     <source-file src="src/android/drawable/ic_credit_card__6.xml" target-dir="src/main/res/drawable" />
     <source-file src="src/android/drawable/ic_credit_cards_payment.xml" target-dir="src/main/res/drawable" />
-    <source-file src="src/android/drawable/rect_border_red.xml" target-dir="src/main/res/drawable" />
+
     <source-file src="src/android/drawable/rect_green_border_white.xml" target-dir="src/main/res/drawable" />
     <source-file src="src/android/drawable/round_rect_grey.xml" target-dir="src/main/res/drawable" />
     <source-file src="src/android/drawable/round_rect_red.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/round_rect_green.xml" target-dir="src/main/res/drawable" />
+    <source-file src="src/android/drawable/round_rect_white.xml" target-dir="src/main/res/drawable" />
 
     <source-file src="src/android/layout/activity_charge.xml" target-dir="src/main/res/layout" />
     <source-file src="src/android/layout/activity_finish.xml" target-dir="src/main/res/layout" />
