@@ -41,6 +41,8 @@ import java.util.Set;
 
 import me.pagar.mposandroid.Mpos;
 
+import com.leve.ai.R;
+
 public class PairingActivity extends AppCompatActivity {
 
     public static final int PAIRING_REQUEST_CODE = 0x985;
@@ -269,18 +271,22 @@ public class PairingActivity extends AppCompatActivity {
                     waitingHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            waitingDialog.dismiss();
-                            waitingHandler.removeCallbacks(this);
-                            ModalUtils.showTextDialog(
-                                    PairingActivity.this,
-                                    R.layout.dialog_text,
-                                    getString(R.string.error),
-                                    getString(R.string.not_device_paired_error_default),
-                                    false,
-                                    true
-                            ).show();
+                            try {
+                                waitingDialog.dismiss();
+                                waitingHandler.removeCallbacks(this);
+                                ModalUtils.showTextDialog(
+                                        PairingActivity.this,
+                                        R.layout.dialog_text,
+                                        getString(R.string.error),
+                                        getString(R.string.not_device_paired_error_default),
+                                        false,
+                                        true
+                                ).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }, 50000);
+                    }, 40000);
                     service.connect();
                 } catch (IOException e) {
                     waitingDialog.dismiss();

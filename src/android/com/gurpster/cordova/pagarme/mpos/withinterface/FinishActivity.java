@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import com.leve.ai.R;
+
 /**
  * Created by Williaan Souza (dextter) on 16/10/2020
  * Contact williaanlopes@gmail.com
@@ -85,7 +87,8 @@ public class FinishActivity extends AppCompatActivity {
         title.setTextColor(color);
         description.setText(getIntent().getStringExtra("message"));
         description.setTextColor(color);
-        animationView.setAnimationFromUrl("https://assets10.lottiefiles.com/packages/lf20_KWZHHd.json");
+        animationView.setVisibility(View.GONE);
+//        animationView.setAnimationFromUrl("https://assets10.lottiefiles.com/packages/lf20_KWZHHd.json");
 
         action.setTextColor(ContextCompat.getColor(
                 getApplicationContext(),
