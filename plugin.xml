@@ -58,8 +58,9 @@
       <service
         android:name="com.gurpster.cordova.pagarme.mpos.MposPluginService"
         android:exported="false"
-        android:enabled="true"/>
-      <service android:enabled="true" android:exported="false" android:name="com.gurpster.cordova.pagarme.mpos.withinterface.MposService" />
+        android:enabled="true"
+        android:process=":service_pay"/>
+      <service android:enabled="true" android:exported="false" android:name="com.gurpster.cordova.pagarme.mpos.withinterface.MposService" android:process=":service_pay_interface"/>
       <activity android:name="com.gurpster.cordova.pagarme.mpos.withinterface.FinishActivity"
         android:label=""
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
