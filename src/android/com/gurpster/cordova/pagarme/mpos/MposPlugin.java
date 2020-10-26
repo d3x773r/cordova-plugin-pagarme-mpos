@@ -30,7 +30,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import com.alibaba.fastjson.JSON;
+import com.gurpster.cordova.pagarme.mpos.withinterface.App;
 import com.gurpster.cordova.pagarme.mpos.withinterface.ChargeActivity;
+import com.gurpster.cordova.pagarme.mpos.withinterface.MposService;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PermissionHelper;
@@ -68,10 +70,24 @@ public class MposPlugin extends CordovaPlugin {
         }
     };
 
+    private final ServiceConnection connectionWithInterface = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MposService.ServiceBinder binder = (MposService.ServiceBinder) service;
+            MposService mposService = binder.getService();
+            App.getInstance().setMposService(mposService);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
     @Override
     protected void pluginInitialize() {
         if (!isMyServiceRunning(MposPluginService.class) || mposPluginService == null) {
             startService();
+            startServiceInterface();
         }
         super.pluginInitialize();
     }
@@ -247,6 +263,19 @@ public class MposPlugin extends CordovaPlugin {
         context.stopService(intent);
     }
 
+    private void startServiceInterface() {
+        Activity context = cordova.getActivity();
+        Intent intent = new Intent(context, MposService.class);
+        context.bindService(intent, connection, BIND_AUTO_CREATE);
+        context.startService(intent);
+    }
+
+    private void stopServiceInterface() {
+        Activity context = cordova.getActivity();
+        Intent intent = new Intent(context, MposService.class);
+        context.stopService(intent);
+    }
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
 
         if (mposPluginService == null) {
@@ -269,12 +298,8 @@ public class MposPlugin extends CordovaPlugin {
 
     @Override
     public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
         stopService();
-        super.onDestroy();
+        stopServiceInterface();
+        super.onStop();
     }
 }
