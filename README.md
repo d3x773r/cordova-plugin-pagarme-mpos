@@ -10,7 +10,7 @@
 pagarme.Mpos.payWithInterface({
 	encryptionKey: string,
 	amount: string,
-	remoteApi: {
+	remoteApi: { 
 	  url: string,
 	  type: 'POST'|'PUT'|'PATCH',
 	  headers: {

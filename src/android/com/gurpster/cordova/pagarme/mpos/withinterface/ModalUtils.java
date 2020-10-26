@@ -128,7 +128,7 @@ public class ModalUtils extends AlertDialog {
     }
 
 
-    public static AlertDialog showTextDialog(@NonNull Context context, @LayoutRes int layout, String myTitle, String content, boolean canCancel, boolean canConfirm) {
+    public static AlertDialog showTextDialog(@NonNull Context context, @LayoutRes int layout, String myTitle, String content) {
         final LayoutInflater factory = LayoutInflater.from(context);
         final View deleteDialogView = factory.inflate(layout, null);
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
