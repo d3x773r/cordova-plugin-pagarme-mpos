@@ -45,7 +45,7 @@ public class MposService extends Service {
     }
 
     public class ServiceBinder extends Binder {
-        MposService getService() {
+        public MposService getService() {
             return MposService.this;
         }
     }

@@ -130,6 +130,8 @@
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/FinishActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
     <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/ProcessActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
 
+    <source-file src="src/android/com/gurpster/cordova/pagarme/mpos/withinterface/MainActivity.java" target-dir="src/com/gurpster/cordova/pagarme/mpos/withinterface" />
+
     <source-file src="src/android/font" target-dir="src/main/res" />
 
     <source-file src="src/android/values/colors.xml" target-dir="src/main/res/values" />

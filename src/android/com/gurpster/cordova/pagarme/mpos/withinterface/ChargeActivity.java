@@ -31,6 +31,8 @@ import me.pagar.mposandroid.PaymentMethod;
 
 import static android.bluetooth.BluetoothProfile.GATT;
 
+import com.leve.ai.R;
+
 public class ChargeActivity extends AppCompatActivity {
 
     private long mLastClickTime = 0;

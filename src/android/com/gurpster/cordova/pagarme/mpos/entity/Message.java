@@ -107,12 +107,16 @@ public class Message {
             case 12:
                 return "Tempo de resposta excedido";
             case 20:
-                return "pin pad não atualizado";
+                return "Pin Pad não atualizado";
             case 60:
                 return "Cartão com problema";
             case -1:
             case 90:
                 return "Erro inesperado, contate o suporte";
+            case 70:
+                return "Bandeira não suportada";
+            case 42:
+                return "Não foi possível se conectar";
             default:
                 return "Error " + code;
         }
